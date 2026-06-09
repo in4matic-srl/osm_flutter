@@ -20,16 +20,16 @@ public class MapviewFactory : NSObject, FlutterPlatformViewFactory {
     }
     
     @MainActor public func create(
-       withFrame frame: CGRect,
-       viewIdentifier viewId: Int64,
-       arguments args: Any?
+        withFrame frame: CGRect,
+        viewIdentifier viewId: Int64,
+        arguments args: Any?
     ) -> FlutterPlatformView {
-       let channel = FlutterMethodChannel(
+        let channel = FlutterMethodChannel(
            name: "plugins.dali.hamza/osmview_"+String(viewId),
            binaryMessenger: self.messenger
-       )
-       return MapCoreOSMView(frame, viewId: viewId, channel: channel, args: args, defaultPin: defaultPinPath)
-       //return MyMapView(frame, viewId: viewId, channel: channel, args: args,dynamicOSM: dynamicOSMPath,defaultPin: defaultPinPath)
+        )
+        return MapCoreOSMView(frame, viewId: viewId, channel: channel, args: args, defaultPin: defaultPinPath)
+        //return MyMapView(frame, viewId: viewId, channel: channel, args: args,dynamicOSM: dynamicOSMPath,defaultPin: defaultPinPath)
     }
 
     public func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {
