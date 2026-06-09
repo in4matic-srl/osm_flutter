@@ -28,7 +28,9 @@ public class MapviewFactory : NSObject, FlutterPlatformViewFactory {
             name: "plugins.dali.hamza/osmview_"+String(viewId),
             binaryMessenger: self.messenger
         )
-        return MapCoreOSMView(frame, viewId: viewId, channel: channel, args: args, defaultPin: defaultPinPath)
+        return MainActor.assumeIsolated {
+            MapCoreOSMView(frame, viewId: viewId, channel: channel, args: args, defaultPin: defaultPinPath)
+        }
         //return MyMapView(frame, viewId: viewId, channel: channel, args: args,dynamicOSM: dynamicOSMPath,defaultPin: defaultPinPath)
     }
 
