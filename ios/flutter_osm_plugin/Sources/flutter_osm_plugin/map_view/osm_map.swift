@@ -608,7 +608,7 @@ class MapCoreOSMView : NSObject, FlutterPlatformView, CLLocationManagerDelegate,
         result(200)
     }
     func onTap(roadId: String) {
-        Task { @MainActor in
+        MainActor.assumeIsolated {
             let roadSelected = storedRoads[roadId]
             if let road = roadSelected {
                 var mapInfo = road.roadInformation?.toMap(instructions: road.instructions) ?? [:]
