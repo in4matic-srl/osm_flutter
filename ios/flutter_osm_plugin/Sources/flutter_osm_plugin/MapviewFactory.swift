@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Flutter
+@preconcurrency import Flutter
 
 public class MapviewFactory : NSObject, FlutterPlatformViewFactory {
     let controller: FlutterViewController
@@ -19,19 +19,17 @@ public class MapviewFactory : NSObject, FlutterPlatformViewFactory {
         self.defaultPinPath = defaultPin
     }
     
-    public func create(
-        withFrame frame: CGRect,
-        viewIdentifier viewId: Int64,
-        arguments args: Any?
+    @MainActor public func create(
+       withFrame frame: CGRect,
+       viewIdentifier viewId: Int64,
+       arguments args: Any?
     ) -> FlutterPlatformView {
        let channel = FlutterMethodChannel(
-            name: "plugins.dali.hamza/osmview_"+String(viewId),
-            binaryMessenger: self.messenger
-        )
-        return MainActor.assumeIsolated {
-            MapCoreOSMView(frame, viewId: viewId, channel: channel, args: args, defaultPin: defaultPinPath)
-        }
-        //return MyMapView(frame, viewId: viewId, channel: channel, args: args,dynamicOSM: dynamicOSMPath,defaultPin: defaultPinPath)
+           name: "plugins.dali.hamza/osmview_"+String(viewId),
+           binaryMessenger: self.messenger
+       )
+       return MapCoreOSMView(frame, viewId: viewId, channel: channel, args: args, defaultPin: defaultPinPath)
+       //return MyMapView(frame, viewId: viewId, channel: channel, args: args,dynamicOSM: dynamicOSMPath,defaultPin: defaultPinPath)
     }
 
     public func createArgsCodec() -> FlutterMessageCodec & NSObjectProtocol {

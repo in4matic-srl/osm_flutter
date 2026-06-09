@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import OSMFlutterFramework
+@preconcurrency import OSMFlutterFramework
 import CoreLocation
 import Polyline
 
@@ -607,16 +607,14 @@ class MapCoreOSMView : NSObject, FlutterPlatformView, CLLocationManagerDelegate,
         mapOSM.shapeManager.drawShape(key: key, shape: shape)
         result(200)
     }
-    func onTap(roadId: String) {
-        MainActor.assumeIsolated {
-            let roadSelected = storedRoads[roadId]
-            if let road = roadSelected {
-                var mapInfo = road.roadInformation?.toMap(instructions: road.instructions) ?? [:]
-                mapInfo["key"] = roadId
-                self.channel.invokeMethod("receiveRoad", arguments: mapInfo)
-            } else {
-                self.channel.invokeMethod("receiveRoad", arguments: ["key":roadId])
-            }
+    @MainActor func onTap(roadId: String) {
+        let roadSelected = storedRoads[roadId]
+        if let road = roadSelected {
+            var mapInfo = road.roadInformation?.toMap(instructions: road.instructions) ?? [:]
+            mapInfo["key"] = roadId
+            self.channel.invokeMethod("receiveRoad", arguments: mapInfo)
+        } else {
+            self.channel.invokeMethod("receiveRoad", arguments: ["key":roadId])
         }
     }
     func onMove(center: CLLocationCoordinate2D, bounds: BoundingBox, zoom: Double) {
