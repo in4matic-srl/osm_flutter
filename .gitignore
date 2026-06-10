@@ -5,6 +5,7 @@
 .pub/
 .history/
 build/
+**/.build/
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
