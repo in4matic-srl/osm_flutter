@@ -674,11 +674,15 @@ class MapCoreOSMView : NSObject, FlutterPlatformView, CLLocationManagerDelegate,
     }
 
     func onMarkerSingleTap(location: CLLocationCoordinate2D) {
-        onTap(location: location)
+        Task { @MainActor in
+            onTap(location: location)
+        }
     }
 
     func onMarkerLongPress(location: CLLocationCoordinate2D) {
-        onLongTap(location: location)
+        Task { @MainActor in
+            onLongTap(location: location)
+        }
     }
     
     func onLongTap(location: CLLocationCoordinate2D) {
