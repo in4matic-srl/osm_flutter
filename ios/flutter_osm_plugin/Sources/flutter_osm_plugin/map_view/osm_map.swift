@@ -678,9 +678,7 @@ class MapCoreOSMView : NSObject, FlutterPlatformView, CLLocationManagerDelegate,
     }
 
     func onMarkerLongPress(location: CLLocationCoordinate2D) {
-        DispatchQueue.main.async {
-            self.channel.invokeMethod("receiveLongPress", arguments: location.toGeoPoint())
-        }
+        onLongTap(location: location)
     }
     
     func onLongTap(location: CLLocationCoordinate2D) {
